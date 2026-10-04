@@ -1,0 +1,51 @@
+{#- Cover letter - one A4 page, in the CV's design. Data comes from a letter module. -#}
+<!DOCTYPE html>
+<html lang="{{ letter.LANGUAGE | default('en') }}">
+<head>
+<meta charset="utf-8">
+<title>{{ cv.NAME }} - cover letter, {{ letter.COMPANY }}</title>
+<link rel="stylesheet" href="letter.css">
+{{ theme_css | safe }}
+</head>
+<body>
+<div class="page">
+  <div class="accent-bar"></div>
+
+  <h1 class="name">{{ cv.NAME }}</h1>
+  <p class="headline">{{ letter.HEADLINE | default(cv.HEADLINE) }}</p>
+  <p class="contact-line">{{ contact_line }}</p>
+  <div class="header-rule"></div>
+
+  <div class="meta">
+    <div class="recipient">
+      <p class="company">{{ letter.COMPANY }}</p>
+      {%- for line in letter.ADDRESS %}
+      <p>{{ line }}</p>
+      {%- endfor %}
+    </div>
+    <p class="date">{{ letter.DATE }}</p>
+  </div>
+
+  {%- if letter.SUBJECT %}
+  <p class="subject">{{ letter.SUBJECT }}</p>
+  {%- endif %}
+
+  <p class="greeting">{{ letter.GREETING }}</p>
+
+  {%- for block in blocks %}
+  {%- if block.kind == 'para' %}
+  <p class="para">{{ block.text }}</p>
+  {%- else %}
+  <ul class="points">
+    {%- for item in block.points %}
+    <li>{{ item }}</li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+  {%- endfor %}
+
+  <p class="closing">{{ letter.CLOSING }}</p>
+  <p class="signature">{{ cv.NAME }}</p>
+</div>
+</body>
+</html>

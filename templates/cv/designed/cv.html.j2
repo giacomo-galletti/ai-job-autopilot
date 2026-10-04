@@ -1,0 +1,147 @@
+{#-
+  Designed CV - one A4 page, two columns.
+
+  Everything the template renders comes from a content module (content_base.py, or a
+  per-application override of it). Nothing is hardcoded here except the structure, so a
+  tailored application only has to change data.
+-#}
+{%- macro meta(when, where) -%}
+{%- if when or where -%}
+<p class="entry-meta">{% if when %}<span class="dates">{{ when }}</span>{% endif %}{% if when and where %} · {% endif %}{{ where or '' }}</p>
+{%- endif -%}
+{%- endmacro -%}
+<!DOCTYPE html>
+<html lang="{{ cv.CV_LANGUAGE | default('en') }}">
+<head>
+<meta charset="utf-8">
+<title>{{ cv.NAME }} - CV</title>
+<link rel="stylesheet" href="cv.css">
+{{ theme_css | safe }}
+</head>
+<body>
+<div class="page">
+  <div class="accent-bar"></div>
+
+  <main class="main">
+    <h1 class="name">{{ cv.NAME }}</h1>
+    <p class="headline">{{ cv.HEADLINE }}</p>
+    <div class="header-rule"></div>
+
+    <p class="section-label">{{ labels.profile }}</p>
+    <p class="profile">{{ cv.PROFILE }}</p>
+
+    {%- if cards %}
+    <p class="section-label">{{ labels.projects }}</p>
+    <div class="cards">
+      {%- for card in cards %}
+      <div class="card">
+        {%- if card.image %}
+        <img class="card-image" src="{{ card.image }}" alt="">
+        {%- endif %}
+        <div class="card-body">
+          <p class="card-title">{{ card.name }}{% if card.title %} &ndash; {{ card.title }}{% endif %}</p>
+          <p class="card-text">{{ card.description }}</p>
+          {%- if card.stack %}
+          <p class="card-stack">{{ card.stack | join(' · ') }}</p>
+          {%- endif %}
+        </div>
+      </div>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+
+    <p class="section-label">{{ labels.experience }}</p>
+    <div>
+      {%- for job in cv.JOBS %}
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">{{ job.get("company") or job.role }}</p>
+          {{ meta(dates(job.get("start"), job.get("end")), location(job)) }}
+        </div>
+        {%- if job.get("company") %}
+        <p class="entry-role">{{ job.role }}</p>
+        {%- endif %}
+        <p class="entry-text">{{ job.sentences | join(' ') }}</p>
+      </div>
+      {%- endfor %}
+    </div>
+
+    <p class="section-label">{{ labels.education }}</p>
+    <div>
+      {%- for item in cv.EDUCATION %}
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">{{ item.get("school") or item.get("degree", "") }}</p>
+          {{ meta(dates(item.get("start"), item.get("end")), item.get("location")) }}
+        </div>
+        {%- if item.get("school") and item.get("degree") %}
+        <p class="entry-role">{{ item.degree }}</p>
+        {%- endif %}
+        <p class="entry-text">{{ item.get("sentences", []) | join(' ') }}</p>
+      </div>
+      {%- endfor %}
+    </div>
+  </main>
+
+  <aside class="sidebar">
+    {%- if photo %}
+    <img class="photo" src="{{ photo }}" alt="{{ cv.NAME }}">
+    {%- endif %}
+
+    <p class="side-label">{{ labels.contact }}</p>
+    <div>
+      {%- for field in contact_fields %}
+      <div class="field">
+        <p class="field-label">{{ field.label }}</p>
+        <p class="field-value">{% if field.href %}<a href="{{ field.href }}">{{ field.value }}</a>{% else %}{{ field.value }}{% endif %}{% if field.extra %}<br>{{ field.extra }}{% endif %}</p>
+      </div>
+      {%- endfor %}
+    </div>
+
+    <p class="side-label">{{ labels.skills }}</p>
+    <div>
+      {%- for group, items in cv.SKILLS %}
+      <div class="skill-group">
+        <p class="skill-group-title">{{ group }}</p>
+        <p class="skill-group-items">{{ items | join(', ') }}</p>
+      </div>
+      {%- endfor %}
+    </div>
+
+    {%- if certifications %}
+    <p class="side-label">{{ labels.certifications }}</p>
+    <div>
+      {%- for line in certifications %}
+      <p class="certification">{{ line }}</p>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+
+    <p class="side-label">{{ labels.languages }}</p>
+    <div>
+      {%- for name, level in cv.LANGUAGES %}
+      <div class="language">
+        <span class="language-name">{{ name }}</span>
+        <span class="language-level">{{ level }}</span>
+      </div>
+      {%- endfor %}
+    </div>
+
+    {%- if references or references_note %}
+    <p class="side-label">{{ labels.references }}</p>
+    <div>
+      {%- for ref in references %}
+      <div class="reference">
+        <p class="reference-name">{{ ref.name }}</p>
+        <p class="reference-role">{{ ref.role }}</p>
+      </div>
+      {%- endfor %}
+      {%- if references_note %}
+      <p class="references-note">{{ references_note }}</p>
+      {%- endif %}
+    </div>
+    {%- endif %}
+  </aside>
+</div>
+</body>
+</html>

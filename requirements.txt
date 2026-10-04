@@ -1,0 +1,11 @@
+# Core: CV / cover-letter build and PDF checks
+jinja2>=3.1
+pypdf>=4.0
+playwright>=1.40          # then: python3 -m playwright install chromium
+pyyaml>=6.0
+openpyxl>=3.1             # salary tooling
+pytest>=7.0               # tests
+
+# PDF layout checks (tools/verify_layout.py). PyMuPDF is AGPL-3.0 licensed; it is only
+# used locally as a dev tool and is not redistributed here. Skip it if that is a concern.
+pymupdf>=1.23

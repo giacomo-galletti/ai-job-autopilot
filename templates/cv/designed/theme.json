@@ -1,0 +1,10 @@
+{
+  "ink": "#1f2937",
+  "body": "#4b5563",
+  "muted": "#6b7280",
+  "accent": "#2563eb",
+  "accent_bar": "#2563eb",
+  "rule": "#e5e7eb",
+  "paper": "#ffffff",
+  "font_family": "Inter"
+}

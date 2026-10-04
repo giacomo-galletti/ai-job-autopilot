@@ -1,0 +1,371 @@
+/* Designed CV: two columns on one A4 page.
+ *
+ * Colours and the font stack are theme variables (see theme.json / theme.py); the values
+ * in :root below are only the fallback. Units are pt on an A4 595x842pt page.
+ *
+ * The page FLOWS: tailored content changes length, so positions are margins rather than
+ * absolute coordinates. The renderer fails the build if the result spills past one page.
+ */
+
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Defaults below are overridden at render time by the theme (theme.json, or
+ * profile/theme.json): render.py injects a :root block after this stylesheet. */
+:root {
+  /* Palette. */
+  --ink: #1f2937; /* name, company names, sidebar category titles */
+  --body: #4b5563; /* all running text */
+  --muted: #6b7280; /* section labels, roles, locations, reference titles */
+  --accent: #2563eb; /* dates, tech-stack lines */
+  --accent-bar: #2563eb; /* the 3pt bar across the top of the page */
+  --rule: #e5e7eb; /* header rule, card borders */
+  --paper: #ffffff;
+
+  /* Type scale (pt). */
+  --fs-name: 24pt;
+  --fs-headline: 10pt;
+  --fs-section: 7pt; /* main-column section labels */
+  --fs-section-side: 6pt; /* sidebar section labels */
+  --fs-entry: 8.5pt; /* company / school / card title */
+  --fs-meta: 7pt; /* dates, role line, card body */
+  --fs-body: 7.25pt; /* running text, sidebar values */
+  --fs-small: 6pt; /* card stack line, sidebar field labels */
+
+  --lh-body: 10pt;
+
+  /* Vertical rhythm. */
+  --gap-section: 16pt; /* block -> next section label */
+  --gap-label: 7pt; /* section label -> its first content */
+  --gap-entry: 9pt; /* entry -> next entry */
+  --tracking-label: 0.16em;
+
+  --page-margin-x: 40pt;
+  --page-margin-top: 34pt;
+  --page-margin-bottom: 34pt;
+  --col-main: 350pt; /* 40pt -> 390pt */
+  --col-side: 133pt; /* 422pt -> 555pt */
+  --col-gap: 32pt; /* 390pt -> 422pt */
+
+  --font-stack: "Inter", -apple-system, system-ui, sans-serif;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 595pt;
+  background: var(--paper);
+}
+
+body {
+  font-family: var(--font-stack);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.page {
+  position: relative;
+  width: 595pt;
+  min-height: 842pt;
+  padding: var(--page-margin-top) var(--page-margin-x) var(--page-margin-bottom);
+  display: grid;
+  grid-template-columns: var(--col-main) var(--col-side);
+  column-gap: var(--col-gap);
+  align-items: start;
+}
+
+/* The 3pt accent bar bleeds off the top edge of the page. */
+.accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3pt;
+  background: var(--accent-bar);
+}
+
+/* ---------- main column ---------- */
+
+.name {
+  font-size: var(--fs-name);
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.headline {
+  margin-top: 4pt;
+  font-size: var(--fs-headline);
+  font-weight: 400;
+  color: var(--body);
+  line-height: 1.2;
+}
+
+.header-rule {
+  margin-top: 15pt;
+  height: 0.5pt;
+  background: var(--rule);
+}
+
+.section-label {
+  margin-top: var(--gap-section);
+  font-size: var(--fs-section);
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+}
+
+.section-label + * {
+  margin-top: var(--gap-label);
+}
+
+.header-rule + .section-label {
+  margin-top: 15pt;
+}
+
+.profile {
+  text-align: left;
+}
+
+/* ---------- project cards ---------- */
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8pt;
+}
+
+.card {
+  border: 0.5pt solid var(--rule);
+  border-radius: 2pt;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.card-image {
+  display: block;
+  width: 100%;
+  height: 78pt;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 8pt;
+}
+
+.card-title {
+  font-size: var(--fs-entry);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.card-text {
+  margin-top: 6pt;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+}
+
+.card-stack {
+  margin-top: 7pt;
+  font-size: var(--fs-small);
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+/* ---------- entries (experience, education) ---------- */
+
+.entry + .entry {
+  margin-top: var(--gap-entry);
+}
+
+.entry-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12pt;
+}
+
+.entry-title {
+  font-size: var(--fs-entry);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.entry-meta {
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.15;
+}
+
+.entry-meta .dates {
+  color: var(--accent);
+}
+
+.entry-role {
+  margin-top: 3pt;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  line-height: 1.15;
+}
+
+.entry-text {
+  margin-top: 3pt;
+}
+
+/* ---------- sidebar ---------- */
+
+.sidebar {
+  /* The sidebar starts level with the name, not with the profile text. */
+  padding-top: 0;
+}
+
+.photo {
+  display: block;
+  /* The master hangs the photo 13pt left of the sidebar text edge (x=409 vs 422). */
+  margin-left: -13pt;
+  width: 86pt;
+  height: 86pt;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.side-label {
+  margin-top: 19pt;
+  font-size: var(--fs-section-side);
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+}
+
+.side-label + * {
+  margin-top: 7pt;
+}
+
+/* The master tucks the Contact label right under the photo rather than a section gap below
+ * it. It cannot go tighter than this: the photo hangs 13pt left of the text edge, so a
+ * negative margin puts the circle's bottom curve through the first word of the label. */
+.photo + .side-label {
+  margin-top: 5pt;
+}
+
+.field + .field {
+  margin-top: 8pt;
+}
+
+.field-label {
+  font-size: var(--fs-small);
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.field-value {
+  margin-top: 2pt;
+  font-size: var(--fs-body);
+  color: var(--body);
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.field-value a {
+  color: var(--body);
+  text-decoration: underline;
+  text-underline-offset: 1.5pt;
+  text-decoration-thickness: 0.4pt;
+}
+
+.skill-group + .skill-group {
+  margin-top: 8pt;
+}
+
+.skill-group-title {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.skill-group-items {
+  margin-top: 2pt;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 5pt;
+}
+
+.language + .language {
+  margin-top: 6pt;
+}
+
+.language-name {
+  font-size: var(--fs-body);
+  color: var(--body);
+}
+
+.language-level {
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.reference + .reference {
+  margin-top: 6.5pt;
+}
+
+.reference-name {
+  font-size: var(--fs-body);
+  color: var(--body);
+  line-height: 1.2;
+}
+
+.reference-role {
+  font-size: var(--fs-small);
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.references-note {
+  margin-top: 6pt;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.certification + .certification {
+  margin-top: 4pt;
+}
+
+.certification {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}

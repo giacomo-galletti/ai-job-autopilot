@@ -1,0 +1,185 @@
+/* Cover letter, in the CV's design.
+ *
+ * Same palette, same fonts, same 40pt margins and 3pt accent bar as
+ * templates/cv/designed/cv.css, so a CV and letter arriving together read as one
+ * pair. Body type is larger than the CV's (9pt vs 7.25pt): a letter is read, not scanned.
+ */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../cv/designed/fonts/Inter-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Defaults below are overridden at render time by the theme (see templates/cv/designed/theme.py). */
+:root {
+  --ink: #1f2937;
+  --body: #4b5563;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-bar: #2563eb;
+  --rule: #e5e7eb;
+  --paper: #ffffff;
+
+  --fs-name: 24pt;
+  --fs-headline: 10pt;
+  --fs-label: 7pt;
+  --fs-body: 9pt;
+  --fs-small: 7.5pt;
+  --lh-body: 14pt;
+
+  --margin-x: 40pt;
+  --margin-top: 34pt;
+  --margin-bottom: 40pt;
+
+  --font-stack: "Inter", -apple-system, system-ui, sans-serif;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 595pt;
+  background: var(--paper);
+}
+
+body {
+  font-family: var(--font-stack);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  position: relative;
+  width: 595pt;
+  min-height: 842pt;
+  padding: var(--margin-top) var(--margin-x) var(--margin-bottom);
+}
+
+.accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3pt;
+  background: var(--accent-bar);
+}
+
+.name {
+  font-size: var(--fs-name);
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.headline {
+  margin-top: 4pt;
+  font-size: var(--fs-headline);
+  color: var(--body);
+  line-height: 1.2;
+}
+
+.contact-line {
+  margin-top: 8pt;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.contact-line a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.header-rule {
+  margin-top: 15pt;
+  height: 0.5pt;
+  background: var(--rule);
+}
+
+/* Recipient block and date sit on one row, the way the CV pairs a title with its dates. */
+.meta {
+  margin-top: 26pt;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24pt;
+}
+
+.recipient {
+  font-size: var(--fs-small);
+  color: var(--body);
+  line-height: 1.45;
+}
+
+.recipient .company {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.date {
+  font-size: var(--fs-small);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.subject {
+  margin-top: 26pt;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  line-height: 1;
+}
+
+.subject + .greeting {
+  margin-top: 18pt;
+}
+
+.greeting {
+  margin-top: 26pt;
+  color: var(--ink);
+}
+
+p.para {
+  margin-top: 12pt;
+}
+
+ul.points {
+  margin-top: 12pt;
+  padding-left: 12pt;
+}
+
+ul.points li {
+  margin-top: 5pt;
+  padding-left: 4pt;
+}
+
+ul.points li::marker {
+  color: var(--accent);
+}
+
+.closing {
+  margin-top: 20pt;
+}
+
+.signature {
+  margin-top: 6pt;
+  font-weight: 600;
+  color: var(--ink);
+}

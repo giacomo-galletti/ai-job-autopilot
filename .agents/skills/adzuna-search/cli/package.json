@@ -1,0 +1,20 @@
+{
+  "name": "adzuna-search-cli",
+  "version": "1.0.0",
+  "description": "CLI for worldwide job search via the official Adzuna REST API",
+  "type": "module",
+  "main": "src/cli.ts",
+  "bin": {
+    "adzuna-search": "src/cli.ts"
+  },
+  "scripts": {
+    "start": "node src/cli.ts",
+    "search": "node src/cli.ts search",
+    "test": "node --test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "typescript": "^5.4.0"
+  }
+}
